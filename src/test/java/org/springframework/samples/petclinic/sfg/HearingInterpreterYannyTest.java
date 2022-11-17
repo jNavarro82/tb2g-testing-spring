@@ -9,16 +9,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {BaseConfig.class, LaurelConfig.class})
-public class HearingInterpreterTest {
+@ContextConfiguration(classes = {BaseConfig.class, YannyConfig.class})
+public class HearingInterpreterYannyTest {
 
     @Autowired
-    private HearingInterpreter hearingInterpreter;
+    private
+    HearingInterpreter hearingInterpreter;
 
     @Test
     public void whatIHear() {
-        String actualHearing = this.hearingInterpreter.whatIHear();
+        String whatIHear = this.hearingInterpreter.whatIHear();
 
-        assertEquals("Laurel", actualHearing);
+        assertEquals("Yanny", whatIHear);
     }
 }
