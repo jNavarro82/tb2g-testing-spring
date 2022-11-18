@@ -1,24 +1,19 @@
-package org.springframework.samples.petclinic.sfg.junit5;
+package org.springframework.samples.petclinic.sfg;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.samples.petclinic.sfg.HearingInterpreter;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * ComponentScan feature.
- */
-@ActiveProfiles("component-scan")
-@SpringJUnitConfig(classes = HearingInterpreterComponentScanTest.TestConfig.class)
-class HearingInterpreterComponentScanTest {
-
-    @Profile("component-scan")
+@TestPropertySource("/yanny.properties")
+@ActiveProfiles("externalized")
+@SpringJUnitConfig(classes = PropertiesTest.TestConfig.class)
+class PropertiesTest {
     @Configuration
     @ComponentScan("org.springframework.samples.petclinic.sfg")
     static class TestConfig {
@@ -32,7 +27,6 @@ class HearingInterpreterComponentScanTest {
     void whatIHear() {
         String actualHearing = this.hearingInterpreter.whatIHear();
 
-        assertEquals("Laurel", actualHearing);
+        assertEquals("YaNNy", actualHearing);
     }
-
 }
