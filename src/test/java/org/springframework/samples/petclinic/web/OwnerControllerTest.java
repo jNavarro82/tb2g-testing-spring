@@ -38,18 +38,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OwnerControllerTest {
 
     @Autowired
-    OwnerController ownerController;
+    private OwnerController ownerController;
 
     @Autowired
-    ClinicService clinicService;
+    private ClinicService clinicService;
 
     @Mock
     private Map<String, Object> model;
 
     @Captor
-    ArgumentCaptor<String> captor;
+    private ArgumentCaptor<String> captor;
 
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +59,31 @@ class OwnerControllerTest {
     @AfterEach
     void tearDown() {
         reset(this.clinicService);
+    }
+
+    @Test
+    void testEditOwnerPostValid() throws Exception {
+        this.mockMvc.perform(post("/owners/{ownerId}/edit", "1")
+                        .param("firstName", "Jimmy")
+                        .param("lastName", "Buffet")
+                        .param("address", "123 Duval St")
+                        .param("city", "Madrid")
+                        .param("telephone", "789456321"))
+                .andExpect(view().name("redirect:/owners/{ownerId}"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void testEditOwnerPostInValid() throws Exception {
+        this.mockMvc.perform(post("/owners/{ownerId}/edit", "1")
+                        .param("firstName", "Jimmy")
+                        .param("lastName", "Buffet")
+                        .param("city", "Madrid"))
+                .andExpect(model().attributeHasErrors("owner"))
+                .andExpect(model().attributeHasFieldErrors("owner", "address"))
+                .andExpect(model().attributeHasFieldErrors("owner", "telephone"))
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"))
+                .andExpect(status().isOk());
     }
 
     @Test
